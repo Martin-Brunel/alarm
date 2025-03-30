@@ -53,6 +53,10 @@ export async function POST(request: NextRequest) {
     }
     }
     */
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR');
+    const timeStr = now.toLocaleTimeString('fr-FR');
+    
     await axios.get("https://smsapi.free-mobile.fr/sendmsg", {
       params: {
         user: process.env.ALARM_PHONE_USER,
@@ -60,7 +64,11 @@ export async function POST(request: NextRequest) {
         msg: `${code}${command}`,
       },
     });
-    console.log(`SMS envoyé au ${to}: ${code}${command}`);
+    
+    // Log amélioré avec emoji et formatage plus lisible
+    const commandEmoji = command === "ARM" ? "🔒" : "🔓";
+    console.log(`📱 SMS envoyé | ${commandEmoji} ${command} | Code: ${code} | Destinataire: ${to} | ${dateStr} à ${timeStr}`);
+    
     return NextResponse.json({ success: true }, { status: 200 });
     // Pour le moment, simulons une réponse réussie
   } catch (error) {
