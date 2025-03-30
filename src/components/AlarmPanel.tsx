@@ -1,5 +1,5 @@
 "use client"
-import { useState, ChangeEvent, JSX } from 'react';
+import { useState, useEffect, ChangeEvent, JSX } from 'react';
 import styles from '../../styles/AlarmPanel.module.css';
 
 type AlarmStatus = 'armed' | 'disarmed' | 'unknown';
@@ -12,6 +12,14 @@ export default function AlarmPanel(): JSX.Element {
   const [error, setError] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
 
+  // Récupérer le numéro de téléphone du localStorage au chargement du composant
+  useEffect(() => {
+    const savedPhone = localStorage.getItem('alarmPhoneNumber');
+    if (savedPhone) {
+      setPhoneNumber(savedPhone);
+    }
+  }, []);
+
   const handleCodeChange = (e: ChangeEvent<HTMLInputElement>): void => {
     // Limiter à 4 chiffres
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -22,6 +30,8 @@ export default function AlarmPanel(): JSX.Element {
     // Accepter uniquement les chiffres, +, et espaces
     const value = e.target.value.replace(/[^0-9+\s]/g, '');
     setPhoneNumber(value);
+    
+
   };
 
   const sendCommand = async (command: AlarmCommand): Promise<void> => {
@@ -55,6 +65,8 @@ export default function AlarmPanel(): JSX.Element {
       const data = await response.json();
       
       if (response.ok) {
+            // Sauvegarder dans localStorage à chaque changement
+        localStorage.setItem('alarmPhoneNumber', phoneNumber);
         setStatus(command === 'ARM' ? 'armed' : 'disarmed');
       } else {
         setError(data.message || 'Une erreur est survenue');

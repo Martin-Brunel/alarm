@@ -3,7 +3,7 @@
   max-width: 400px;
   padding: 2rem;
   border-radius: 12px;
-  background-color: #f8f9fa;
+  /* background-color: #f8f9fa; */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 2rem auto;
 }
@@ -63,6 +63,7 @@
   border: 2px solid #ced4da;
   border-radius: 6px;
   background-color: white;
+  color: black;
 }
 
 .error {
@@ -109,6 +110,13 @@
 
 .disarmButton:hover:not(:disabled) {
   background-color: #218838;
+}
+
+.lastAction {
+  font-size: 0.9rem;
+  color: #6c757d;
+  text-align: center;
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 480px) {
